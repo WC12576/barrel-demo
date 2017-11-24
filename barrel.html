@@ -70,7 +70,7 @@
                     rowWidth = 0,
                     rowHeight = 0,
                     clientWidth = this.$ct.width(),
-                    lastIMgInfo = imgInfo
+                    lastImgInfo = imgInfo
                 this.rowList.push(imgInfo)
                 //console.log(this.rowList)
                 $.each(rowList,function(index,imgInfo){
@@ -78,22 +78,31 @@
                     if(rowWidth > clientWidth){
                         rowList.pop()
                         //console.log("rowList",rowList)
-                        rowWidth = rowWidth - lastIMgInfo.width
+                        rowWidth = rowWidth - lastImgInfo.width
                         rowHeight = _this.baseHeight * clientWidth / rowWidth
                         _this.createRow(rowHeight)
+                        //console.log(index)
                         _this.rowList = []
-                        //console.log(lastIMgInfo)
-                        _this.rowList.push(lastIMgInfo)
+                        //console.log(lastImgInfo)
+                        //console.log(_this.rowList)
+                        _this.rowList.push(lastImgInfo)
                     }
+                    //存在bug，当最后一行以基础高度设置时不能占满则不会显示
+                    //这样写的话则会有一个以基础高度加载后拉伸的效果，体验不好
+                    //????
+                    _this.createRow(_this.baseHeight)
+                    
+                    
+                    
                 })
             },
-            createRow: function(rowHeight){
+            createRow: function(height){
                    
                 var $rowCt = $('<div class="img-row"></div>')
                 $.each(this.rowList, function(index, imgInfo){
                     var $imgCt = $('<div class="img-box"></div>')
                     var $img = imgInfo.target
-                    $img.height(rowHeight)
+                    $img.height(height)
                     $imgCt.append($img)
                     $rowCt.append($imgCt)
                 })
